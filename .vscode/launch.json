@@ -1,0 +1,14 @@
+{
+  "configurations": [
+    {
+      "type": "java",
+      "name": "Spring Boot-EcommerceAppApplication<ecommerceApp>",
+      "request": "launch",
+      "cwd": "${workspaceFolder}",
+      "mainClass": "com.ecommerce.ecommerceApp.EcommerceAppApplication",
+      "projectName": "ecommerceApp",
+      "args": "",
+      "envFile": "${workspaceFolder}/.env"
+    }
+  ]
+}
