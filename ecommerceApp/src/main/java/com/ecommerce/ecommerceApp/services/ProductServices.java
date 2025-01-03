@@ -9,6 +9,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.ecommerce.ecommerceApp.exceptions.ProductNotFoundException;
 import com.ecommerce.ecommerceApp.model.Product;
 
 /**
@@ -29,6 +30,6 @@ public class ProductServices {
     }
 
     public Product getProductById(int id) {
-        return products.stream().filter(p -> p.getProductId() == id).findFirst().get();
+        return products.stream().filter(p -> p.getProductId() == id).findFirst().orElseThrow(() -> new ProductNotFoundException("Product with ID " + id + " not found"));
     }
 }
