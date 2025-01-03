@@ -7,6 +7,7 @@ package com.ecommerce.ecommerceApp.controllers;
 import java.util.List;
 
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ecommerce.ecommerceApp.model.Product;
@@ -21,9 +22,14 @@ public class ProductController {
         this.productServices = productServices;
     }
 
-    @GetMapping("/")
+    @GetMapping("/products")
     public List<Product> getProducts() {
         return productServices.getAllProducts();
+    }
+
+    @GetMapping("/products/{id}")
+    public Product getProductById(@PathVariable int id) {
+        return productServices.getProductById(id);
     }
 
 }

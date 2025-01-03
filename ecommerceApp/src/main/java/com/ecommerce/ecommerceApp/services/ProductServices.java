@@ -27,4 +27,8 @@ public class ProductServices {
     public List<Product> getAllProducts() {
         return products;
     }
+
+    public Product getProductById(int id) {
+        return products.stream().filter(p -> p.getProductId() == id).findFirst().get();
+    }
 }
