@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import com.ecommerce.ecommerceApp.exceptions.ProductNotFoundException;
 import com.ecommerce.ecommerceApp.model.Product;
+import com.ecommerce.ecommerceApp.repository.ProductRepository;
 
 /**
  *
@@ -26,8 +27,17 @@ public class ProductServices {
             new Product(3, "Tablet", "3000")
     ));
 
-    public List<Product> getAllProducts() {
-        return products;
+    public final ProductRepository productRepository;
+
+    public ProductServices(ProductRepository productRepository) {
+        this.productRepository = productRepository;
+    }
+
+    public Iterable<Product> getAllProducts() {
+        // return products;
+        Iterable<Product> productsh2 = productRepository.findAll();
+        System.out.println(productsh2);
+        return productsh2;
     }
 
     public Product getProductById(int id) {
