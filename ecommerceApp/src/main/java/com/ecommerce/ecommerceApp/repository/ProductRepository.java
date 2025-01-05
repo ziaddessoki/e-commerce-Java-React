@@ -5,6 +5,7 @@
 package com.ecommerce.ecommerceApp.repository;
 
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Repository;
 
 import com.ecommerce.ecommerceApp.model.Product;
 
@@ -12,6 +13,7 @@ import com.ecommerce.ecommerceApp.model.Product;
  *
  * @author zeemo
  */
+@Repository
 public interface ProductRepository extends CrudRepository<Product, Integer> {
 
 }
