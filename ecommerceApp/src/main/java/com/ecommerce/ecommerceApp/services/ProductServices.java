@@ -12,7 +12,6 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.ecommerce.ecommerceApp.exceptions.ProductNotFoundException;
 import com.ecommerce.ecommerceApp.model.Product;
@@ -60,28 +59,24 @@ public class ProductServices {
         return productRepository.save(product);
     }
 
-    @Transactional
+    // @Transactional
     public Product updateProduct(Product product) {
-        try {
-            validateProduct(product);
-            Product existingProduct = getProductById(product.getProductId());
-            if (existingProduct == null) {
-                throw new ProductNotFoundException("Product with ID " + product.getProductId() + " not found");
-            }
-            existingProduct.setProductName(product.getProductName());
-            existingProduct.setPrice(product.getPrice());
-            productRepository.save(existingProduct);
-            return existingProduct;
-        } catch (IllegalArgumentException e) {
-            throw new IllegalArgumentException(e.getMessage());
-        }
+        validateProduct(product);
+        Product existingProduct = getProductById(product.getProductId());
+
+        existingProduct.setProductName(product.getProductName());
+        existingProduct.setPrice(product.getPrice());
+        productRepository.save(existingProduct);
+        logger.info("Updated product with ID: {}", existingProduct.getProductId());
+        return existingProduct;
     }
 
     public void deleteProd(int id) {
-        boolean removed = products.removeIf(p -> p.getProductId() == id);
-        if (!removed) {
+        if (!productRepository.existsById(id)) {
             throw new ProductNotFoundException("Product with ID " + id + " not found");
         }
+        productRepository.deleteById(id);
+        logger.info("Deleted product with ID: {}", id);
     }
 
     private void validateProduct(Product product) {
