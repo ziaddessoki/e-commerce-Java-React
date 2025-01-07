@@ -4,6 +4,8 @@
  */
 package com.ecommerce.ecommerceApp.controllers;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -29,23 +31,20 @@ public class ProductController {
         return productServices.getAllProducts();
     }
 
-    @GetMapping("/products/{id}")
+    @GetMapping("/product/{id}")
     public Product getById(@PathVariable int id) {
         return productServices.getProductById(id);
     }
 
     @PostMapping("/product")
-    public void add(@RequestBody Product product) {
-
-        productServices.addProduct(product);
-
+    public ResponseEntity<Product> add(@RequestBody Product product) {
+        Product savedProduct = productServices.addProduct(product);
+        return new ResponseEntity<>(savedProduct, HttpStatus.CREATED);
     }
 
     @PutMapping("/product")
     public Product update(@RequestBody Product entity) {
-
         Product updatedProduct = productServices.updateProduct(entity);
-
         return updatedProduct;
     }
 
