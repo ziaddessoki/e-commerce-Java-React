@@ -5,9 +5,6 @@
 package com.ecommerce.ecommerceApp.services;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,12 +21,11 @@ import com.ecommerce.ecommerceApp.repository.ProductRepository;
 @Service
 public class ProductServices {
 
-    List<Product> products = new ArrayList<>(Arrays.asList(
-            new Product(1, "Laptop", "10000"),
-            new Product(2, "Mobile", "5000"),
-            new Product(3, "Tablet", "3000")
-    ));
-
+    // List<Product> products = new ArrayList<>(Arrays.asList(
+    //         new Product(1, "Laptop", "10000"),
+    //         new Product(2, "Mobile", "5000"),
+    //         new Product(3, "Tablet", "3000")
+    // ));
     private static final Logger logger = LoggerFactory.getLogger(ProductServices.class);
     public final ProductRepository productRepository;
 
@@ -38,9 +34,9 @@ public class ProductServices {
     }
 
     public Iterable<Product> getAllProducts() {
-        Iterable<Product> productsh2 = productRepository.findAll();
-        System.out.println(productsh2);
-        return productsh2;
+        Iterable<Product> products = productRepository.findAll();
+        System.out.println(products);
+        return products;
     }
 
     public Product getProductById(int id) {
@@ -55,19 +51,38 @@ public class ProductServices {
         // products.add(product);
         // return product;
         validateProduct(product);
-        logger.info("Adding product: {}", product.getProductName());
+        logger.info("Adding product: {}", product.getName());
         return productRepository.save(product);
     }
 
     // @Transactional
     public Product updateProduct(Product product) {
         validateProduct(product);
-        Product existingProduct = getProductById(product.getProductId());
+        Product existingProduct = getProductById(product.getId());
 
-        existingProduct.setProductName(product.getProductName());
-        existingProduct.setPrice(product.getPrice());
+        // Update only the fields provided in the incoming product
+        if (product.getName() != null) {
+            existingProduct.setName(product.getName());
+        }
+        if (product.getDescription() != null) {
+            existingProduct.setDescription(product.getDescription());
+        }
+        if (product.getBrand() != null) {
+            existingProduct.setBrand(product.getBrand());
+        }
+        if (product.getPrice() != null) {
+            existingProduct.setPrice(product.getPrice());
+        }
+        if (product.getCategory() != null) {
+            existingProduct.setCategory(product.getCategory());
+        }
+        if (product.getReleaseDate() != null) {
+            existingProduct.setReleaseDate(product.getReleaseDate());
+        }
+        existingProduct.setAvailable(product.isAvailable());
+        existingProduct.setQuantity(product.getQuantity());
         productRepository.save(existingProduct);
-        logger.info("Updated product with ID: {}", existingProduct.getProductId());
+        logger.info("Updated product with ID: {}", existingProduct.getId());
         return existingProduct;
     }
 
@@ -83,7 +98,7 @@ public class ProductServices {
         if (product == null) {
             throw new IllegalArgumentException("Product cannot be null.");
         }
-        if (product.getProductName() == null || product.getProductName().trim().isEmpty()) {
+        if (product.getName() == null || product.getName().trim().isEmpty()) {
             logger.error("Product name is required and cannot be empty.");
             throw new IllegalArgumentException("Product name is required and cannot be empty.");
         }
