@@ -1,61 +1,14 @@
 import ProductCard from "../components/ProductCard";
-
-// Temporary mock data
-const popularProducts = [
-  {
-    id: 1,
-    name: "Wireless Headphones",
-    price: 99.99,
-    image:
-      "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500&h=500&fit=crop",
-    description: "High-quality wireless headphones with noise cancellation",
-  },
-  {
-    id: 2,
-    name: "Smart Watch",
-    price: 199.99,
-    image:
-      "https://images.unsplash.com/photo-1546868871-7041f2a55e12?w=500&h=500&fit=crop",
-    description: "Feature-rich smartwatch with health tracking",
-  },
-  {
-    id: 3,
-    name: "Laptop Backpack",
-    price: 49.99,
-    image:
-      "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=500&h=500&fit=crop",
-    description: "Durable and spacious laptop backpack",
-  },
-];
-
-const suggestedProducts = [
-  {
-    id: 4,
-    name: "Wireless Mouse",
-    price: 29.99,
-    image:
-      "https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?w=500&h=500&fit=crop",
-    description: "Ergonomic wireless mouse for comfortable use",
-  },
-  {
-    id: 5,
-    name: "USB-C Hub",
-    price: 39.99,
-    image:
-      "https://images.unsplash.com/photo-1593642632823-8f785ba67e45?w=500&h=500&fit=crop",
-    description: "Multi-port USB-C hub for your devices",
-  },
-  {
-    id: 6,
-    name: "External SSD",
-    price: 129.99,
-    image:
-      "https://images.unsplash.com/photo-1597872200969-2b65d56bd16b?w=500&h=500&fit=crop",
-    description: "Fast and reliable external SSD storage",
-  },
-];
+import useProductsStore from "../store/useProductsStore";
 
 const HomePage = () => {
+  const popularProducts = useProductsStore((state) =>
+    state.getPopularProducts()
+  );
+  const suggestedProducts = useProductsStore((state) =>
+    state.getSuggestedProducts()
+  );
+
   return (
     <div className="home-page">
       <section className="hero-section">

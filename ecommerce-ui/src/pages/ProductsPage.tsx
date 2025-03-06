@@ -1,77 +1,24 @@
 import { useState } from "react";
+import { useSearchParams } from "react-router-dom";
 import ProductCard from "../components/ProductCard";
+import useProductsStore from "../store/useProductsStore";
 import "./ProductsPage.css";
 
-// Mock data for products
-const allProducts = [
-  {
-    id: 1,
-    name: "Wireless Headphones",
-    price: 99.99,
-    image:
-      "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500&h=500&fit=crop",
-    description: "High-quality wireless headphones with noise cancellation",
-    category: "Audio",
-  },
-  {
-    id: 2,
-    name: "Smart Watch",
-    price: 199.99,
-    image:
-      "https://images.unsplash.com/photo-1546868871-7041f2a55e12?w=500&h=500&fit=crop",
-    description: "Feature-rich smartwatch with health tracking",
-    category: "Wearables",
-  },
-  {
-    id: 3,
-    name: "Laptop Backpack",
-    price: 49.99,
-    image:
-      "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=500&h=500&fit=crop",
-    description: "Durable and spacious laptop backpack",
-    category: "Accessories",
-  },
-  {
-    id: 4,
-    name: "Wireless Mouse",
-    price: 29.99,
-    image:
-      "https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?w=500&h=500&fit=crop",
-    description: "Ergonomic wireless mouse for comfortable use",
-    category: "Accessories",
-  },
-  {
-    id: 5,
-    name: "USB-C Hub",
-    price: 39.99,
-    image:
-      "https://images.unsplash.com/photo-1593642632823-8f785ba67e45?w=500&h=500&fit=crop",
-    description: "Multi-port USB-C hub for your devices",
-    category: "Accessories",
-  },
-  {
-    id: 6,
-    name: "External SSD",
-    price: 129.99,
-    image:
-      "https://images.unsplash.com/photo-1597872200969-2b65d56bd16b?w=500&h=500&fit=crop",
-    description: "Fast and reliable external SSD storage",
-    category: "Storage",
-  },
-];
-
-const categories = ["All", "Audio", "Wearables", "Accessories", "Storage"];
-
 const ProductsPage = () => {
-  const [selectedCategory, setSelectedCategory] = useState("All");
+  const [searchParams] = useSearchParams();
+  const initialCategory = searchParams.get("category") || "All";
+  const [selectedCategory, setSelectedCategory] = useState(initialCategory);
   const [sortBy, setSortBy] = useState("featured");
 
-  const filteredProducts = allProducts.filter(
-    (product) =>
-      selectedCategory === "All" || product.category === selectedCategory
+  const products = useProductsStore((state) =>
+    state.getProductsByCategory(selectedCategory)
   );
+  const categories = [
+    "All",
+    ...useProductsStore((state) => state.categories.map((cat) => cat.name)),
+  ];
 
-  const sortedProducts = [...filteredProducts].sort((a, b) => {
+  const sortedProducts = [...products].sort((a, b) => {
     switch (sortBy) {
       case "price-low":
         return a.price - b.price;
